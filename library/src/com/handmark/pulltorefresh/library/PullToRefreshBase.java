@@ -29,6 +29,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
@@ -46,7 +47,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	// Constants
 	// ===========================================================
 
-	static final boolean DEBUG = true;
+	static final boolean DEBUG = false;
 
 	static final boolean USE_HW_LAYERS = false;
 
@@ -281,6 +282,13 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 							if (mMode == Mode.BOTH) {
 								mCurrentMode = Mode.PULL_FROM_END;
 							}
+						}
+					}
+					
+					if (mIsBeingDragged) {
+						ViewParent parent = getParent();
+						if (parent != null) {
+							parent.requestDisallowInterceptTouchEvent(true);
 						}
 					}
 				}
